@@ -127,7 +127,61 @@ export interface YieldCurvePoint {
   changeBps: number;
 }
 
+export interface SectorPerformance {
+  name: string;
+  code: string;
+  change1D: number;
+  change1W: number;
+  change1M: number;
+  changeYTD: number;
+  marketWeightPct: number;
+  topStock: string;
+  sentiment: 'BULLISH' | 'NEUTRAL' | 'BEARISH';
+}
+
+export interface EconomicIndicator {
+  id: string;
+  name: string;
+  country: string;
+  category: 'INFLATION' | 'LABOR' | 'GROWTH' | 'TRADE' | 'CENTRAL_BANK' | 'SURVEY';
+  period: string;
+  actual: string;
+  forecast: string;
+  prior: string;
+  unit: string;
+  impact: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+  trend: 'UP' | 'DOWN' | 'STABLE';
+  surprise: 'BEAT' | 'MISS' | 'IN_LINE';
+  releaseTime: string;
+}
+
+export interface GdpQuarterData {
+  quarter: string;
+  realGdpGrowthPct: number;
+  personalConsumptionPct: number;
+  privateInvestmentPct: number;
+  governmentSpendingPct: number;
+  netExportsPct: number;
+}
+
+export interface GlobalGdpComparison {
+  country: string;
+  flag: string;
+  nominalGdpUsdTrillion: number;
+  annualGrowthPct: number;
+  inflationPct: number;
+  policyRatePct: number;
+}
+
+export interface TradeBalanceData {
+  period: string;
+  exportsBln: number;
+  importsBln: number;
+  balanceBln: number;
+}
+
 export type TerminalFunctionCode =
+  | 'DASH'
   | 'DES'
   | 'GP'
   | 'MD'
@@ -140,3 +194,4 @@ export type TerminalFunctionCode =
   | 'WORKSPACE';
 
 export type TerminalTheme = 'bloomberg-amber' | 'modern-dark' | 'matrix-green';
+

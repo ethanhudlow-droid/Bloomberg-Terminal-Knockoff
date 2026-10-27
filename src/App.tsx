@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TerminalProvider, useTerminal } from './context/TerminalContext';
 import { TerminalHeader } from './components/TerminalHeader';
 import { LiveTickerBar } from './components/LiveTickerBar';
+import { MarketMacroDashboard } from './components/views/MarketMacroDashboard';
 import { SecurityOverview } from './components/views/SecurityOverview';
 import { TechnicalChart } from './components/views/TechnicalChart';
 import { MarketDepth } from './components/views/MarketDepth';
@@ -34,7 +35,7 @@ const TerminalContent: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Global Keyboard Shortcuts (F1 - F10, Escape)
+  // Global Keyboard Shortcuts (F1 - F11, Escape)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't intercept if user is typing in an input or textarea
@@ -49,50 +50,55 @@ const TerminalContent: React.FC = () => {
       switch (e.key) {
         case 'F1':
           e.preventDefault();
-          setCurrentView('DES');
+          setCurrentView('DASH');
           soundService.playChime('EXECUTE');
           break;
         case 'F2':
           e.preventDefault();
-          setCurrentView('GP');
+          setCurrentView('DES');
           soundService.playChime('EXECUTE');
           break;
         case 'F3':
           e.preventDefault();
-          setCurrentView('MD');
+          setCurrentView('GP');
           soundService.playChime('EXECUTE');
           break;
         case 'F4':
           e.preventDefault();
-          setCurrentView('FA');
+          setCurrentView('MD');
           soundService.playChime('EXECUTE');
           break;
         case 'F5':
           e.preventDefault();
-          setCurrentView('WATCH');
+          setCurrentView('FA');
           soundService.playChime('EXECUTE');
           break;
         case 'F6':
           e.preventDefault();
-          setCurrentView('SEC');
+          setCurrentView('WATCH');
           soundService.playChime('EXECUTE');
           break;
         case 'F7':
           e.preventDefault();
-          setCurrentView('YCRV');
+          setCurrentView('SEC');
           soundService.playChime('EXECUTE');
           break;
         case 'F8':
           e.preventDefault();
-          setCurrentView('N');
+          setCurrentView('YCRV');
           soundService.playChime('EXECUTE');
           break;
         case 'F9':
           e.preventDefault();
-          setCurrentView('B-QUANT');
+          setCurrentView('N');
           soundService.playChime('EXECUTE');
           break;
         case 'F10':
+          e.preventDefault();
+          setCurrentView('B-QUANT');
+          soundService.playChime('EXECUTE');
+          break;
+        case 'F11':
           e.preventDefault();
           setCurrentView('WORKSPACE');
           soundService.playChime('EXECUTE');
@@ -116,6 +122,7 @@ const TerminalContent: React.FC = () => {
 
       {/* Main Terminal Viewport */}
       <main className="flex-1 flex overflow-hidden relative">
+        {currentView === 'DASH' && <MarketMacroDashboard />}
         {currentView === 'DES' && <SecurityOverview />}
         {currentView === 'GP' && <TechnicalChart />}
         {currentView === 'MD' && <MarketDepth />}
@@ -143,25 +150,27 @@ const TerminalContent: React.FC = () => {
 
         {/* Hotkey Guide */}
         <div className="hidden xl:flex items-center space-x-2 text-[#5a6273]">
-          <span><strong className="text-[#ff9900]">F1</strong> DES</span>
+          <span><strong className="text-[#ff9900]">F1</strong> MARKET</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F2</strong> GP</span>
+          <span><strong className="text-[#ff9900]">F2</strong> DES</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F3</strong> MD</span>
+          <span><strong className="text-[#ff9900]">F3</strong> GP</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F4</strong> FA</span>
+          <span><strong className="text-[#ff9900]">F4</strong> MD</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F5</strong> TICKER</span>
+          <span><strong className="text-[#ff9900]">F5</strong> FA</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F6</strong> SEC</span>
+          <span><strong className="text-[#ff9900]">F6</strong> TICKER</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F7</strong> YCRV</span>
+          <span><strong className="text-[#ff9900]">F7</strong> SEC</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F8</strong> NEWS</span>
+          <span><strong className="text-[#ff9900]">F8</strong> YCRV</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F9</strong> QUANT</span>
+          <span><strong className="text-[#ff9900]">F9</strong> NEWS</span>
           <span>&bull;</span>
-          <span><strong className="text-[#ff9900]">F10</strong> 4-QUAD</span>
+          <span><strong className="text-[#ff9900]">F10</strong> QUANT</span>
+          <span>&bull;</span>
+          <span><strong className="text-[#ff9900]">F11</strong> 4-QUAD</span>
         </div>
 
         {/* Clock & Status */}

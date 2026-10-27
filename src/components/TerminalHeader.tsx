@@ -17,7 +17,8 @@ import {
   FileCheck,
   Radio,
   BarChart2,
-  List
+  List,
+  Globe
 } from 'lucide-react';
 
 interface NavItem {
@@ -28,16 +29,17 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { code: 'DES', label: 'DES', hotkey: 'F1', icon: TrendingUp },
-  { code: 'GP', label: 'GP', hotkey: 'F2', icon: BarChart2 },
-  { code: 'MD', label: 'MD', hotkey: 'F3', icon: Layers },
-  { code: 'FA', label: 'FA', hotkey: 'F4', icon: FileText },
-  { code: 'WATCH', label: 'TICKER', hotkey: 'F5', icon: List },
-  { code: 'SEC', label: 'SEC', hotkey: 'F6', icon: FileCheck },
-  { code: 'YCRV', label: 'YCRV', hotkey: 'F7', icon: Activity },
-  { code: 'N', label: 'NEWS', hotkey: 'F8', icon: Radio },
-  { code: 'B-QUANT', label: 'B-QUANT', hotkey: 'F9', icon: Cpu },
-  { code: 'WORKSPACE', label: '4-QUAD', hotkey: 'F10', icon: Sliders },
+  { code: 'DASH', label: 'MARKET', hotkey: 'F1', icon: Globe },
+  { code: 'DES', label: 'DES', hotkey: 'F2', icon: TrendingUp },
+  { code: 'GP', label: 'GP', hotkey: 'F3', icon: BarChart2 },
+  { code: 'MD', label: 'MD', hotkey: 'F4', icon: Layers },
+  { code: 'FA', label: 'FA', hotkey: 'F5', icon: FileText },
+  { code: 'WATCH', label: 'TICKER', hotkey: 'F6', icon: List },
+  { code: 'SEC', label: 'SEC', hotkey: 'F7', icon: FileCheck },
+  { code: 'YCRV', label: 'YCRV', hotkey: 'F8', icon: Activity },
+  { code: 'N', label: 'NEWS', hotkey: 'F9', icon: Radio },
+  { code: 'B-QUANT', label: 'B-QUANT', hotkey: 'F10', icon: Cpu },
+  { code: 'WORKSPACE', label: '4-QUAD', hotkey: 'F11', icon: Sliders },
 ];
 
 export const TerminalHeader: React.FC = () => {

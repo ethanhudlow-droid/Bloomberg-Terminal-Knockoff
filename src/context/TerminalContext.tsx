@@ -84,7 +84,7 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [tickFlashes, setTickFlashes] = useState<Record<string, 'UP' | 'DOWN'>>({});
   const [isRealTimeRunning, setIsRealTimeRunning] = useState<boolean>(true);
   const [tickSpeedMs, setTickSpeedMs] = useState<number>(1500); // 1.5s tick default
-  const [currentView, setCurrentView] = useState<TerminalFunctionCode>('DES');
+  const [currentView, setCurrentView] = useState<TerminalFunctionCode>('DASH');
   const [financialDisplayMode, setFinancialDisplayMode] = useState<'STANDARD' | 'GROWTH' | 'COMMON_SIZE'>('STANDARD');
   const [financialCurrencyScale, setFinancialCurrencyScale] = useState<'MILLIONS' | 'BILLIONS'>('MILLIONS');
   const [isLiveFeedConnected, setIsLiveFeedConnected] = useState<boolean>(false);
@@ -443,6 +443,7 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return;
     }
 
+    if (upper === 'DASH' || upper === 'MKT' || upper === 'MACRO' || upper === 'DASH <GO>' || upper === 'MKT <GO>') { setCurrentView('DASH'); return; }
     if (upper === 'DES' || upper === 'DES <GO>') { setCurrentView('DES'); return; }
     if (upper === 'GP' || upper === 'CHART' || upper === 'GP <GO>') { setCurrentView('GP'); return; }
     if (upper === 'MD' || upper === 'L2' || upper === 'ORDERBOOK' || upper === 'MD <GO>') { setCurrentView('MD'); return; }

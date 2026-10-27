@@ -1,6 +1,6 @@
 {
   "name": "Apex Terminal - Bloomberg-Grade Financial Intelligence",
-  "description": "Institutional-grade financial terminal with real-time multi-asset market data, interactive candlestick technical charting, Level 2 order book depth, 5-year financial statements, SEC filings, sovereign yield curve models, and AI quantitative analysis.",
+  "description": "Institutional-grade financial terminal with comprehensive global market dashboard, multi-asset class benchmarks, S&P 500 sector heatmaps, domestic & global economic indicators (GDP, imports/exports trade data), real-time stock ticker, 5-year audited financial statements, and AI quantitative analysis.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
