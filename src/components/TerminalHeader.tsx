@@ -80,19 +80,29 @@ export const TerminalHeader: React.FC = () => {
     <header className="bg-[#101217] border-b border-[#242731] select-none text-xs">
       {/* Top Functional Utility Bar */}
       <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#1b1e26] text-[#8e95a5]">
-        {/* Zone 1: Terminal Branding & Active Symbol */}
+        {/* Zone 1: Command Line Box & Active Symbol */}
         <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-1.5">
-            <span className="h-2 w-2 rounded-full bg-[#ff9900] shadow-[0_0_8px_#ff9900]"></span>
-            <span className="font-bold tracking-wider text-[#ff9900] font-mono-bbg uppercase">
-              APEX // TERMINAL
-            </span>
-            <span className="text-[10px] text-[#555d6e] px-1 py-0.5 bg-[#181b22] border border-[#2b303c] rounded">
-              B-PRO v2026.4
-            </span>
-          </div>
+          {/* Bloomberg Command Prompt on Top-Left */}
+          <form onSubmit={handleCommandSubmit} className="flex items-center">
+            <div className="relative flex items-center">
+              <span className="absolute left-2.5 text-[#ff9900] font-bold font-mono-bbg text-xs select-none">&gt;</span>
+              <input
+                type="text"
+                value={commandInput}
+                onChange={(e) => setCommandInput(e.target.value)}
+                placeholder="NVDA FA <GO> or AAPL GP..."
+                className="bg-[#08090b] text-[#f0f2f7] border border-[#303542] hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-14 py-1 text-xs font-mono-bbg rounded-sm w-52 sm:w-68 md:w-80 placeholder-[#4f5666] transition-colors shadow-inner"
+              />
+              <button
+                type="submit"
+                className="absolute right-1 px-1.5 py-0.5 text-[10px] font-bold font-mono-bbg bg-[#ff9900] text-black hover:bg-[#ffb033] rounded-xs cursor-pointer tracking-wider"
+              >
+                &lt;GO&gt;
+              </button>
+            </div>
+          </form>
 
-          <div className="h-3 w-[1px] bg-[#292e3a]"></div>
+          <div className="h-4 w-[1px] bg-[#292e3a] hidden sm:block"></div>
 
           {/* Active Security Identity */}
           <div className="flex items-center space-x-2 font-mono-bbg">
@@ -108,27 +118,8 @@ export const TerminalHeader: React.FC = () => {
           </div>
         </div>
 
-        {/* Zone 3: Command Line Box & Controls */}
+        {/* Zone 2: Live Sync, Speed & Controls */}
         <div className="flex items-center space-x-2.5">
-          {/* Bloomberg Command Prompt */}
-          <form onSubmit={handleCommandSubmit} className="flex items-center">
-            <div className="relative flex items-center">
-              <span className="absolute left-2 text-[#ff9900] font-bold font-mono-bbg text-xs">&gt;</span>
-              <input
-                type="text"
-                value={commandInput}
-                onChange={(e) => setCommandInput(e.target.value)}
-                placeholder="NVDA FA <GO> or AAPL GP..."
-                className="bg-[#08090b] text-[#f0f2f7] border border-[#303542] hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-14 py-1 text-xs font-mono-bbg rounded-sm w-48 sm:w-64 placeholder-[#4f5666] transition-colors"
-              />
-              <button
-                type="submit"
-                className="absolute right-1 px-1.5 py-0.5 text-[10px] font-bold font-mono-bbg bg-[#ff9900] text-black hover:bg-[#ffb033] rounded-xs cursor-pointer tracking-wider"
-              >
-                &lt;GO&gt;
-              </button>
-            </div>
-          </form>
 
           {/* Live Data Feed Connection Badge */}
           <button
