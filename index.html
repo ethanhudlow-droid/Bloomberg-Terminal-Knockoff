@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apex Terminal - Bloomberg-Grade Financial Intelligence</title>
+    <meta name="description" content="Institutional-grade financial terminal with real-time multi-asset market data, interactive candlestick technical charting, Level 2 order book depth, 5-year financial statements, SEC filings, sovereign yield curve models, and AI quantitative analysis." />
+    <meta property="og:title" content="Apex Terminal - Bloomberg-Grade Financial Intelligence" />
+    <meta property="og:description" content="Institutional-grade financial terminal with real-time multi-asset market data, interactive candlestick technical charting, Level 2 order book depth, 5-year financial statements, SEC filings, sovereign yield curve models, and AI quantitative analysis." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      // Suppress Vite HMR WebSocket connection errors in sandbox iframe environment
+      window.addEventListener('unhandledrejection', function (e) {
+        if (e.reason && (
+          e.reason.message?.includes('WebSocket') ||
+          e.reason.message?.includes('closed without opened') ||
+          e.reason.message?.includes('vite')
+        )) {
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('error', function (e) {
+        if (e.message && (
+          e.message.includes('WebSocket') ||
+          e.message.includes('closed without opened') ||
+          e.message.includes('vite')
+        )) {
+          e.preventDefault();
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-[#0c0d0e] text-[#e0e2ec] font-sans antialiased overflow-hidden select-none">
+    <div id="root" class="h-screen w-screen overflow-hidden"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
