@@ -141,10 +141,16 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return false;
   }, [securities, setActiveSecurity]);
 
+  const securitiesRef = useRef(securities);
+  securitiesRef.current = securities;
+
+  const userTickerListRef = useRef(userTickerList);
+  userTickerListRef.current = userTickerList;
+
   // Sync real live quotes from server endpoint
   const refreshLiveQuotes = useCallback(async () => {
     try {
-      const allSymbols = Array.from(new Set([...userTickerList, ...securities.map(s => s.ticker)])).join(',');
+      const allSymbols = Array.from(new Set([...userTickerListRef.current, ...securitiesRef.current.map(s => s.ticker)])).join(',');
       const res = await fetch(`/api/market/quotes?symbols=${encodeURIComponent(allSymbols)}`);
       if (!res.ok) return;
 
@@ -179,14 +185,14 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (e) {
       console.warn('Real quote sync issue:', e);
     }
-  }, [userTickerList, securities]);
+  }, []);
 
   // Initial and periodic background real-quote sync
   useEffect(() => {
     refreshLiveQuotes();
     const syncInterval = setInterval(() => {
       refreshLiveQuotes();
-    }, 12000);
+    }, 15000);
     return () => clearInterval(syncInterval);
   }, [refreshLiveQuotes]);
 
@@ -312,83 +318,93 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return getFinancialsForTicker(ticker, price);
   }, [securities, activeSecurity]);
 
+  const activeSecurityRef = useRef(activeSecurity);
+  activeSecurityRef.current = activeSecurity;
+
   // Micro-tick simulation runner (tightly bounded around real price)
   const performTick = useCallback(() => {
-    setSecurities(prevSecurities => {
-      const updated = [...prevSecurities];
-      const countToUpdate = Math.min(3, Math.max(1, Math.floor(Math.random() * updated.length)));
-      const newFlashes: Record<string, 'UP' | 'DOWN'> = {};
+    const prevSecurities = securitiesRef.current;
+    if (!prevSecurities || prevSecurities.length === 0) return;
 
-      for (let i = 0; i < countToUpdate; i++) {
-        const randIndex = Math.floor(Math.random() * updated.length);
-        const sec = updated[randIndex];
-        
-        const isRate = sec.assetClass === 'RATE';
-        const pctStep = isRate ? (Math.random() - 0.49) * 0.001 : (Math.random() - 0.49) * 0.0008;
-        const rawDelta = sec.price * pctStep;
-        const delta = Number((isRate ? rawDelta : (Math.abs(rawDelta) < 0.01 ? (pctStep > 0 ? 0.01 : -0.01) : rawDelta)).toFixed(isRate ? 3 : 2));
-        
-        const newPrice = Number(Math.max(0.01, sec.price + delta).toFixed(isRate ? 3 : 2));
-        const newChange = Number((newPrice - sec.prevClose).toFixed(isRate ? 3 : 2));
-        const newChangePct = Number(((newChange / sec.prevClose) * 100).toFixed(2));
-        const addVolume = Math.floor(100 + Math.random() * 2500);
+    const updated = [...prevSecurities];
+    const countToUpdate = Math.min(3, Math.max(1, Math.floor(Math.random() * updated.length)));
+    const newFlashes: Record<string, 'UP' | 'DOWN'> = {};
+    const curActive = activeSecurityRef.current;
+    let updatedActiveSec: Security | null = null;
+    let newPriceForActive: number | null = null;
+    let addVolForActive: number | null = null;
+    let directionForActive: 'UP' | 'DOWN' | null = null;
 
-        const direction = delta >= 0 ? 'UP' : 'DOWN';
-        newFlashes[sec.ticker] = direction;
+    for (let i = 0; i < countToUpdate; i++) {
+      const randIndex = Math.floor(Math.random() * updated.length);
+      const sec = updated[randIndex];
+      
+      const isRate = sec.assetClass === 'RATE';
+      const pctStep = isRate ? (Math.random() - 0.49) * 0.001 : (Math.random() - 0.49) * 0.0008;
+      const rawDelta = sec.price * pctStep;
+      const delta = Number((isRate ? rawDelta : (Math.abs(rawDelta) < 0.01 ? (pctStep > 0 ? 0.01 : -0.01) : rawDelta)).toFixed(isRate ? 3 : 2));
+      
+      const newPrice = Number(Math.max(0.01, sec.price + delta).toFixed(isRate ? 3 : 2));
+      const newChange = Number((newPrice - sec.prevClose).toFixed(isRate ? 3 : 2));
+      const newChangePct = Number(((newChange / sec.prevClose) * 100).toFixed(2));
+      const addVolume = Math.floor(100 + Math.random() * 2500);
 
-        updated[randIndex] = {
-          ...sec,
-          price: newPrice,
-          change: newChange,
-          changePercent: newChangePct,
-          dayHigh: Number(Math.max(sec.dayHigh, newPrice).toFixed(isRate ? 3 : 2)),
-          dayLow: Number(Math.min(sec.dayLow, newPrice).toFixed(isRate ? 3 : 2)),
-          volume: sec.volume + addVolume,
-          vwap: Number(((sec.vwap * sec.volume + newPrice * addVolume) / (sec.volume + addVolume)).toFixed(2))
-        };
+      const direction = delta >= 0 ? 'UP' : 'DOWN';
+      newFlashes[sec.ticker] = direction;
 
-        if (sec.ticker === activeSecurity.ticker) {
-          soundService.playTickSound(direction === 'UP');
+      const modifiedSec: Security = {
+        ...sec,
+        price: newPrice,
+        change: newChange,
+        changePercent: newChangePct,
+        dayHigh: Number(Math.max(sec.dayHigh, newPrice).toFixed(isRate ? 3 : 2)),
+        dayLow: Number(Math.min(sec.dayLow, newPrice).toFixed(isRate ? 3 : 2)),
+        volume: sec.volume + addVolume,
+        vwap: Number(((sec.vwap * sec.volume + newPrice * addVolume) / (sec.volume + addVolume)).toFixed(2))
+      };
+      updated[randIndex] = modifiedSec;
 
-          const newTrade: TradePrint = {
-            id: `trade-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-            time: new Date().toTimeString().split(' ')[0],
-            price: newPrice,
-            size: addVolume,
-            side: direction === 'UP' ? 'BUY' : 'SELL',
-            exchange: (['NSDQ', 'ARCA', 'BATS', 'EDGX', 'NYSE'] as const)[Math.floor(Math.random() * 5)]
-          };
-
-          setTimeAndSales(prevTrades => [newTrade, ...prevTrades.slice(0, 49)]);
-          setOrderBook(generateOrderBook(newPrice));
-
-          setCandles(prevCandles => {
-            if (prevCandles.length === 0) return prevCandles;
-            const lastCandle = { ...prevCandles[prevCandles.length - 1] };
-            lastCandle.close = newPrice;
-            lastCandle.high = Math.max(lastCandle.high, newPrice);
-            lastCandle.low = Math.min(lastCandle.low, newPrice);
-            lastCandle.volume += addVolume;
-            return [...prevCandles.slice(0, -1), lastCandle];
-          });
-        }
+      if (sec.ticker === curActive.ticker) {
+        updatedActiveSec = modifiedSec;
+        newPriceForActive = newPrice;
+        addVolForActive = addVolume;
+        directionForActive = direction;
       }
-
-      setTickFlashes(prev => ({ ...prev, ...newFlashes }));
-      setTimeout(() => {
-        setTickFlashes({});
-      }, 700);
-
-      return updated;
-    });
-  }, [activeSecurity.ticker]);
-
-  useEffect(() => {
-    const current = securities.find(s => s.ticker === activeSecurity.ticker);
-    if (current && current.price !== activeSecurity.price) {
-      setActiveSecurityState(current);
     }
-  }, [securities, activeSecurity.ticker, activeSecurity.price]);
+
+    setSecurities(updated);
+    setTickFlashes(newFlashes);
+    setTimeout(() => {
+      setTickFlashes({});
+    }, 600);
+
+    if (updatedActiveSec && newPriceForActive != null && addVolForActive != null && directionForActive != null) {
+      setActiveSecurityState(updatedActiveSec);
+      soundService.playTickSound(directionForActive === 'UP');
+
+      const newTrade: TradePrint = {
+        id: `trade-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+        time: new Date().toTimeString().split(' ')[0],
+        price: newPriceForActive,
+        size: addVolForActive,
+        side: directionForActive === 'UP' ? 'BUY' : 'SELL',
+        exchange: (['NSDQ', 'ARCA', 'BATS', 'EDGX', 'NYSE'] as const)[Math.floor(Math.random() * 5)]
+      };
+
+      setTimeAndSales(prevTrades => [newTrade, ...prevTrades.slice(0, 49)]);
+      setOrderBook(generateOrderBook(newPriceForActive));
+
+      setCandles(prevCandles => {
+        if (prevCandles.length === 0) return prevCandles;
+        const lastCandle = { ...prevCandles[prevCandles.length - 1] };
+        lastCandle.close = newPriceForActive;
+        lastCandle.high = Math.max(lastCandle.high, newPriceForActive);
+        lastCandle.low = Math.min(lastCandle.low, newPriceForActive);
+        lastCandle.volume += addVolForActive;
+        return [...prevCandles.slice(0, -1), lastCandle];
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (!isRealTimeRunning) return;

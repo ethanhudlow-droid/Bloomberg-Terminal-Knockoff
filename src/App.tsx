@@ -14,6 +14,7 @@ import { TerminalNews } from './components/views/TerminalNews';
 import { QuantAnalyst } from './components/views/QuantAnalyst';
 import { QuadWorkspace } from './components/views/QuadWorkspace';
 import { soundService } from './services/soundService';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const TerminalContent: React.FC = () => {
   const { currentView, setCurrentView } = useTerminal();
@@ -184,8 +185,10 @@ const TerminalContent: React.FC = () => {
 
 export default function App() {
   return (
-    <TerminalProvider>
-      <TerminalContent />
-    </TerminalProvider>
+    <ErrorBoundary>
+      <TerminalProvider>
+        <TerminalContent />
+      </TerminalProvider>
+    </ErrorBoundary>
   );
 }

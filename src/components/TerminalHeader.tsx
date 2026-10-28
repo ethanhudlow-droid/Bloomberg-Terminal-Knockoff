@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTerminal } from '../context/TerminalContext';
 import { TerminalFunctionCode } from '../types/terminal';
+import { soundService } from '../services/soundService';
 import {
   Activity,
-  Volume2,
-  VolumeX,
   RefreshCw,
   Search,
   Play,
@@ -18,28 +17,31 @@ import {
   Radio,
   BarChart2,
   List,
-  Globe
+  Globe,
+  ChevronDown,
+  Check
 } from 'lucide-react';
 
 interface NavItem {
   code: TerminalFunctionCode;
   label: string;
+  description: string;
   hotkey: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { code: 'DASH', label: 'MARKET', hotkey: 'F1', icon: Globe },
-  { code: 'DES', label: 'DES', hotkey: 'F2', icon: TrendingUp },
-  { code: 'GP', label: 'GP', hotkey: 'F3', icon: BarChart2 },
-  { code: 'MD', label: 'MD', hotkey: 'F4', icon: Layers },
-  { code: 'FA', label: 'FA', hotkey: 'F5', icon: FileText },
-  { code: 'WATCH', label: 'TICKER', hotkey: 'F6', icon: List },
-  { code: 'SEC', label: 'SEC', hotkey: 'F7', icon: FileCheck },
-  { code: 'YCRV', label: 'YCRV', hotkey: 'F8', icon: Activity },
-  { code: 'N', label: 'NEWS', hotkey: 'F9', icon: Radio },
-  { code: 'B-QUANT', label: 'B-QUANT', hotkey: 'F10', icon: Cpu },
-  { code: 'WORKSPACE', label: '4-QUAD', hotkey: 'F11', icon: Sliders },
+  { code: 'DASH', label: 'MARKET', description: 'Cross-Asset Performance & Macro Economic Dashboard', hotkey: 'F1', icon: Globe },
+  { code: 'DES', label: 'DES', description: 'Company Overview, Multiples & Capital Structure', hotkey: 'F2', icon: TrendingUp },
+  { code: 'GP', label: 'GP', description: 'Technical Price Candlestick & Volume Chart', hotkey: 'F3', icon: BarChart2 },
+  { code: 'MD', label: 'MD', description: 'Level 2 Order Book & Depth of Market', hotkey: 'F4', icon: Layers },
+  { code: 'FA', label: 'FA', description: '5-Year Financial Statements (IS, BS, CF)', hotkey: 'F5', icon: FileText },
+  { code: 'WATCH', label: 'TICKER', description: 'Real-Time Multi-Asset Live Quote Monitor', hotkey: 'F6', icon: List },
+  { code: 'SEC', label: 'SEC', description: 'EDGAR Regulatory Filings (10-K, 10-Q, 8-K)', hotkey: 'F7', icon: FileCheck },
+  { code: 'YCRV', label: 'YCRV', description: 'US Sovereign Yield Curve & Treasury Spreads', hotkey: 'F8', icon: Activity },
+  { code: 'N', label: 'NEWS', description: 'Real-Time Institutional Financial News Wire', hotkey: 'F9', icon: Radio },
+  { code: 'B-QUANT', label: 'B-QUANT', description: 'Gemini AI Equity Research Memo & Stress Test', hotkey: 'F10', icon: Cpu },
+  { code: 'WORKSPACE', label: '4-QUAD', description: 'Multi-Panel Quad Workspace Grid', hotkey: 'F11', icon: Sliders },
 ];
 
 export const TerminalHeader: React.FC = () => {
@@ -56,12 +58,29 @@ export const TerminalHeader: React.FC = () => {
     setTickSpeedMs,
     refreshLiveQuotes,
     isLiveFeedConnected,
-    lastSyncTime,
-    isAudioOn,
-    toggleAudio
+    lastSyncTime
   } = useTerminal();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  const activeItem = NAV_ITEMS.find((item) => item.code === currentView) || NAV_ITEMS[0];
+  const ActiveIcon = activeItem.icon;
 
   const handleCommandSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,11 +97,11 @@ export const TerminalHeader: React.FC = () => {
 
   return (
     <header className="bg-[#101217] border-b border-[#242731] select-none text-xs">
-      {/* Top Functional Utility Bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#1b1e26] text-[#8e95a5]">
-        {/* Zone 1: Command Line Box & Active Symbol */}
-        <div className="flex items-center space-x-3">
-          {/* Bloomberg Command Prompt on Top-Left */}
+      {/* Unified Functional Utility Bar */}
+      <div className="flex items-center justify-between px-3 py-1.5 text-[#8e95a5] gap-2.5">
+        {/* Left Side: Command Line Box + Function Dropdown + Active Symbol */}
+        <div className="flex items-center space-x-2.5 sm:space-x-3 overflow-visible">
+          {/* Bloomberg Command Prompt */}
           <form onSubmit={handleCommandSubmit} className="flex items-center">
             <div className="relative flex items-center">
               <span className="absolute left-2.5 text-[#ff9900] font-bold font-mono-bbg text-xs select-none">&gt;</span>
@@ -91,7 +110,7 @@ export const TerminalHeader: React.FC = () => {
                 value={commandInput}
                 onChange={(e) => setCommandInput(e.target.value)}
                 placeholder="NVDA FA <GO> or AAPL GP..."
-                className="bg-[#08090b] text-[#f0f2f7] border border-[#303542] hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-14 py-1 text-xs font-mono-bbg rounded-sm w-52 sm:w-68 md:w-80 placeholder-[#4f5666] transition-colors shadow-inner"
+                className="bg-[#08090b] text-[#f0f2f7] border border-[#303542] hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-13 py-1 text-xs font-mono-bbg rounded-sm w-44 sm:w-56 md:w-64 placeholder-[#4f5666] transition-colors shadow-inner"
               />
               <button
                 type="submit"
@@ -102,7 +121,97 @@ export const TerminalHeader: React.FC = () => {
             </div>
           </form>
 
-          <div className="h-4 w-[1px] bg-[#292e3a] hidden sm:block"></div>
+          <div className="h-4 w-[1px] bg-[#292e3a] shrink-0"></div>
+
+          {/* Function Dropdown Menu */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-expanded={isMenuOpen}
+              aria-haspopup="listbox"
+              className="flex items-center space-x-2 px-2.5 py-1 bg-[#14161d] hover:bg-[#1a1d26] border border-[#ff9900]/70 hover:border-[#ff9900] rounded-sm text-[#e0e2ec] cursor-pointer transition-all shadow-[0_0_8px_rgba(255,153,0,0.15)] group font-mono-bbg"
+            >
+              <span className="bg-[#ff9900] text-black font-bold text-[10px] px-1.5 py-0.2 rounded-xs tracking-wide">
+                {activeItem.hotkey}
+              </span>
+              <ActiveIcon className="w-3.5 h-3.5 text-[#ff9900]" />
+              <span className="font-bold text-white tracking-wide text-xs">
+                {activeItem.label}
+              </span>
+              <ChevronDown
+                className={`w-3 h-3 text-[#ff9900] transition-transform duration-200 ${
+                  isMenuOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {/* Floating Dropdown Menu Panel */}
+            {isMenuOpen && (
+              <div
+                role="listbox"
+                className="absolute left-0 top-full mt-1.5 w-[330px] sm:w-[400px] bg-[#101217] border border-[#ff9900]/60 rounded-sm shadow-2xl z-50 overflow-hidden py-1 divide-y divide-[#1f232d] font-mono-bbg"
+              >
+                <div className="px-3 py-1.5 bg-[#161820] flex items-center justify-between text-[10px] text-[#788294]">
+                  <span className="font-bold text-[#ff9900] tracking-wider uppercase">
+                    AVAILABLE FUNCTIONS ({NAV_ITEMS.length})
+                  </span>
+                  <span>HOTKEY [F1-F11]</span>
+                </div>
+                <div className="max-h-[360px] overflow-y-auto no-scrollbar">
+                  {NAV_ITEMS.map((item) => {
+                    const isActive = currentView === item.code;
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={item.code}
+                        type="button"
+                        role="option"
+                        aria-selected={isActive}
+                        onClick={() => {
+                          setCurrentView(item.code);
+                          setIsMenuOpen(false);
+                          soundService.playChime('EXECUTE');
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2 text-left cursor-pointer transition-colors ${
+                          isActive
+                            ? 'bg-[#ff9900]/15 text-[#ff9900] border-l-2 border-[#ff9900]'
+                            : 'hover:bg-[#181a22] text-[#c4cad4] hover:text-white border-l-2 border-transparent'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-2.5">
+                          <span
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-xs ${
+                              isActive
+                                ? 'bg-[#ff9900] text-black'
+                                : 'bg-[#20232c] text-[#8e96a7]'
+                            }`}
+                          >
+                            {item.hotkey}
+                          </span>
+                          <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-[#ff9900]' : 'text-[#8e96a7]'}`} />
+                          <div>
+                            <div className="font-semibold text-xs tracking-wide">
+                              {item.label}
+                            </div>
+                            <div className="text-[10px] text-[#6d7586] font-normal truncate max-w-[210px] sm:max-w-[270px]">
+                              {item.description}
+                            </div>
+                          </div>
+                        </div>
+
+                        {isActive && (
+                          <Check className="w-3.5 h-3.5 text-[#ff9900] shrink-0 ml-2" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="h-4 w-[1px] bg-[#292e3a] shrink-0 hidden sm:block"></div>
 
           {/* Active Security Identity */}
           <div className="flex items-center space-x-2 font-mono-bbg">
@@ -118,9 +227,8 @@ export const TerminalHeader: React.FC = () => {
           </div>
         </div>
 
-        {/* Zone 2: Live Sync, Speed & Controls */}
-        <div className="flex items-center space-x-2.5">
-
+        {/* Right Side: Live Sync, Speed & Controls (Audio and Quick Jump removed) */}
+        <div className="flex items-center space-x-2 sm:space-x-2.5 shrink-0">
           {/* Live Data Feed Connection Badge */}
           <button
             onClick={handleRefreshClick}
@@ -157,48 +265,8 @@ export const TerminalHeader: React.FC = () => {
               <option value={3000} className="bg-[#121418] text-white">3.0s (Slow)</option>
             </select>
           </div>
-
-          {/* Audio Chimes Toggle */}
-          <button
-            onClick={toggleAudio}
-            title={isAudioOn ? 'Audio Chimes Enabled' : 'Audio Chimes Muted'}
-            className={`p-1 border rounded cursor-pointer ${
-              isAudioOn
-                ? 'border-[#ff9900]/40 text-[#ff9900] bg-[#ff9900]/10'
-                : 'border-[#272b36] text-[#555d6e] hover:text-[#9ea6b5]'
-            }`}
-          >
-            {isAudioOn ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
-          </button>
         </div>
       </div>
-
-      {/* Zone 2: Navigation Links & Function Keys (F1 - F10) */}
-      <nav className="flex items-center px-2 py-1 overflow-x-auto no-scrollbar bg-[#0d0e12] space-x-1">
-        {NAV_ITEMS.map((item) => {
-          const isActive = currentView === item.code;
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.code}
-              onClick={() => setCurrentView(item.code)}
-              className={`flex items-center space-x-1.5 px-2.5 py-1 text-xs font-mono-bbg border transition-all cursor-pointer whitespace-nowrap rounded-xs ${
-                isActive
-                  ? 'border-[#ff9900] bg-[#ff9900] text-black font-bold shadow-[0_0_10px_rgba(255,153,0,0.3)]'
-                  : 'border-[#20232c] bg-[#13151b] text-[#9ba2b3] hover:text-white hover:border-[#383e4d] hover:bg-[#1a1d25]'
-              }`}
-            >
-              <span className={`text-[10px] font-semibold px-1 py-0.2 rounded-xs ${
-                isActive ? 'bg-black text-[#ff9900]' : 'bg-[#21242d] text-[#6d7586]'
-              }`}>
-                {item.hotkey}
-              </span>
-              <Icon className="w-3.5 h-3.5" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
     </header>
   );
 };
