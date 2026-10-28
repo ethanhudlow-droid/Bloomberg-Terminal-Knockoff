@@ -94,7 +94,7 @@ export const TechnicalChart: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Chart Top Control Bar */}
-      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733] gap-2">
+      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 gap-2 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             GP: {activeSecurity.ticker} US EQUITY
@@ -104,7 +104,7 @@ export const TechnicalChart: React.FC = () => {
           </span>
 
           {/* Timeframe Selectors */}
-          <div className="flex items-center bg-[#171920] border border-[#2b2f3d] rounded-xs p-0.5 text-[10px]">
+          <div className="flex items-center bg-[#171920] border border-[#ff9900]/40 rounded-xs p-0.5 text-[10px]">
             {(['1D', '5D', '1M', '6M', '1Y'] as const).map((rng) => (
               <button
                 key={rng}
@@ -119,7 +119,7 @@ export const TechnicalChart: React.FC = () => {
           </div>
 
           {/* Style: Candle vs Line */}
-          <div className="flex items-center bg-[#171920] border border-[#2b2f3d] rounded-xs p-0.5 text-[10px]">
+          <div className="flex items-center bg-[#171920] border border-[#ff9900]/40 rounded-xs p-0.5 text-[10px]">
             <button
               onClick={() => setChartType('CANDLE')}
               className={`px-2 py-0.5 rounded-xs cursor-pointer ${
@@ -144,7 +144,7 @@ export const TechnicalChart: React.FC = () => {
           <button
             onClick={() => setShowSMA20(!showSMA20)}
             className={`px-2 py-0.5 border rounded-xs cursor-pointer ${
-              showSMA20 ? 'border-amber-500/80 bg-amber-950/30 text-[#ff9900] font-bold' : 'border-[#262933] text-[#636c7e]'
+              showSMA20 ? 'border-amber-500/80 bg-amber-950/30 text-[#ff9900] font-bold' : 'border-[#ff9900]/30 text-[#8e97aa]'
             }`}
           >
             SMA 20
@@ -152,7 +152,7 @@ export const TechnicalChart: React.FC = () => {
           <button
             onClick={() => setShowSMA50(!showSMA50)}
             className={`px-2 py-0.5 border rounded-xs cursor-pointer ${
-              showSMA50 ? 'border-cyan-500/80 bg-cyan-950/30 text-cyan-400 font-bold' : 'border-[#262933] text-[#636c7e]'
+              showSMA50 ? 'border-cyan-500/80 bg-cyan-950/30 text-cyan-400 font-bold' : 'border-[#ff9900]/30 text-[#8e97aa]'
             }`}
           >
             SMA 50
@@ -160,7 +160,7 @@ export const TechnicalChart: React.FC = () => {
           <button
             onClick={() => setShowRSI(!showRSI)}
             className={`px-2 py-0.5 border rounded-xs cursor-pointer ${
-              showRSI ? 'border-purple-500/80 bg-purple-950/30 text-purple-400 font-bold' : 'border-[#262933] text-[#636c7e]'
+              showRSI ? 'border-purple-500/80 bg-purple-950/30 text-purple-400 font-bold' : 'border-[#ff9900]/30 text-[#8e97aa]'
             }`}
           >
             RSI (14)
@@ -170,7 +170,7 @@ export const TechnicalChart: React.FC = () => {
 
       {/* OHLCV Crosshair Data Header */}
       {activeCandle && (
-        <div className="flex flex-wrap items-center justify-between px-3 py-1.5 bg-[#0e1014] border-b border-[#1c1f28] text-xs gap-2">
+        <div className="flex flex-wrap items-center justify-between px-3 py-1.5 bg-[#0e1014] border-b border-[#ff9900]/30 text-xs gap-2">
           <div className="flex items-center space-x-4">
             <span className="text-[#a0a8b7]">Time: <strong className="text-white">{activeCandle.time}</strong></span>
             <span className="text-[#a0a8b7]">O: <strong className="text-white">${activeCandle.open.toFixed(2)}</strong></span>
@@ -187,7 +187,7 @@ export const TechnicalChart: React.FC = () => {
 
       {/* Chart Canvas Area */}
       <div className="flex-1 relative p-3 overflow-hidden flex flex-col">
-        <div className="flex-1 border border-[#232733] bg-[#0c0d10] relative rounded-xs overflow-hidden flex flex-col">
+        <div className="flex-1 border border-[#ff9900]/60 bg-[#0c0d10] relative rounded-xs overflow-hidden flex flex-col shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           {/* Main Candlestick SVG Chart */}
           <div className="flex-1 relative">
             <svg

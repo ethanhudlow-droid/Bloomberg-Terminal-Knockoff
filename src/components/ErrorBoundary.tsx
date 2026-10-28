@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="flex flex-col items-center justify-center min-h-screen w-screen bg-[#0c0d10] text-[#e6e8ee] font-mono-bbg p-6 select-none">
           <div className="max-w-xl w-full bg-[#14161d] border-2 border-[#ff9900] rounded p-6 shadow-2xl">
             {/* Header */}
-            <div className="flex items-center space-x-3 border-b border-[#2d3240] pb-3 mb-4">
+            <div className="flex items-center space-x-3 border-b border-[#ff9900]/40 pb-3 mb-4">
               <AlertTriangle className="w-6 h-6 text-[#ff9900]" />
               <div>
                 <h1 className="text-sm font-bold text-[#ff9900] uppercase tracking-wider">
@@ -51,13 +51,13 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             {/* Error Message */}
-            <div className="bg-[#0a0b0e] border border-[#232733] p-3 rounded text-xs mb-4 overflow-x-auto text-red-400">
+            <div className="bg-[#0a0b0e] border border-[#ff9900]/50 p-3 rounded text-xs mb-4 overflow-x-auto text-red-400">
               <span className="font-bold text-[#ff9900]">ERR_DETAIL: </span>
               {this.state.error?.message || 'Unknown runtime error'}
             </div>
 
             {this.state.errorInfo?.componentStack && (
-              <pre className="bg-[#08090b] border border-[#1b1e26] p-2.5 rounded text-[10px] text-[#717b8f] mb-4 max-h-40 overflow-y-auto custom-scrollbar">
+              <pre className="bg-[#08090b] border border-[#ff9900]/30 p-2.5 rounded text-[10px] text-[#717b8f] mb-4 max-h-40 overflow-y-auto custom-scrollbar">
                 {this.state.errorInfo.componentStack}
               </pre>
             )}

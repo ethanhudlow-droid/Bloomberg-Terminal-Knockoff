@@ -16,7 +16,7 @@ export const TerminalNews: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             N: BLOOMBERG FIRST WORD & GLOBAL NEWSWIRE
@@ -25,7 +25,7 @@ export const TerminalNews: React.FC = () => {
             | REAL-TIME INSTITUTIONAL DISPATCHES
           </span>
         </div>
-        <div className="flex items-center space-x-1.5 bg-[#171920] border border-[#2b2f3d] rounded-xs p-0.5 text-[10px]">
+        <div className="flex items-center space-x-1.5 bg-[#171920] border border-[#ff9900]/40 rounded-xs p-0.5 text-[10px]">
           {['ALL', 'MACRO', 'EQUITIES', 'FX_COMMODITIES'].map((cat) => (
             <button
               key={cat}
@@ -41,10 +41,10 @@ export const TerminalNews: React.FC = () => {
       </div>
 
       {/* Main Split: Headlines on Left / Story on Right */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2 p-3 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2.5 p-3 overflow-hidden">
         {/* Headlines Feed */}
-        <div className="flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-hidden">
-          <div className="py-2 px-3 bg-[#161820] border-b border-[#232733] text-[11px] font-semibold text-[#ff9900] uppercase flex items-center justify-between">
+        <div className="flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-hidden shadow-[0_0_12px_rgba(255,153,0,0.06)]">
+          <div className="py-2 px-3 bg-[#161820] border-b border-[#ff9900]/30 text-[11px] font-semibold text-[#ff9900] uppercase flex items-center justify-between">
             <span>LIVE WIRE FEED</span>
             <span className="text-[10px] text-emerald-400 flex items-center space-x-1">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
@@ -52,7 +52,7 @@ export const TerminalNews: React.FC = () => {
             </span>
           </div>
 
-          <div className="flex-1 overflow-y-auto divide-y divide-[#181a22]">
+          <div className="flex-1 overflow-y-auto divide-y divide-[#ff9900]/15">
             {filteredNews.map((item) => {
               const isSelected = item.id === activeArticle?.id;
               return (
@@ -90,7 +90,7 @@ export const TerminalNews: React.FC = () => {
                           e.stopPropagation();
                           selectSecurityByTicker(t);
                         }}
-                        className="text-[10px] text-[#ff9900] bg-[#181b22] px-1 py-0.2 rounded-xs border border-[#272b36] hover:bg-[#ff9900] hover:text-black"
+                        className="text-[10px] text-[#ff9900] bg-[#181b22] px-1 py-0.2 rounded-xs border border-[#ff9900]/40 hover:border-[#ff9900] hover:bg-[#ff9900] hover:text-black cursor-pointer"
                       >
                         {t}
                       </span>
@@ -103,7 +103,7 @@ export const TerminalNews: React.FC = () => {
         </div>
 
         {/* Story Reader */}
-        <div className="lg:col-span-2 flex flex-col border border-[#232733] bg-[#101217] rounded-xs p-4 overflow-y-auto">
+        <div className="lg:col-span-2 flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs p-4 overflow-y-auto shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           {activeArticle && (
             <div className="space-y-4">
               <div className="flex items-center space-x-2 text-[11px] text-[#788194]">
@@ -119,13 +119,13 @@ export const TerminalNews: React.FC = () => {
                 {activeArticle.headline}
               </h1>
 
-              <div className="flex items-center space-x-2 pt-1 pb-3 border-b border-[#21242d]">
-                <span className="text-[11px] text-[#636c7d]">Affected Securities:</span>
+              <div className="flex items-center space-x-2 pt-1 pb-3 border-b border-[#ff9900]/30">
+                <span className="text-[11px] text-[#ff9900]/80">Affected Securities:</span>
                 {activeArticle.relatedTickers.map((ticker) => (
                   <button
                     key={ticker}
                     onClick={() => selectSecurityByTicker(ticker)}
-                    className="px-2 py-0.5 bg-[#181b24] hover:bg-[#ff9900] hover:text-black text-[#ff9900] border border-[#2c3240] rounded-xs font-bold text-xs cursor-pointer"
+                    className="px-2 py-0.5 bg-[#181b24] hover:bg-[#ff9900] hover:text-black text-[#ff9900] border border-[#ff9900]/40 rounded-xs font-bold text-xs cursor-pointer transition-colors"
                   >
                     {ticker} &lt;GO&gt;
                   </button>

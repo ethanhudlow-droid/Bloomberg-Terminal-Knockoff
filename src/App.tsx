@@ -137,7 +137,7 @@ const TerminalContent: React.FC = () => {
       </main>
 
       {/* High-Density Terminal Bottom Status Bar */}
-      <footer className="h-6 bg-[#090a0c] border-t border-[#1f222b] px-3 flex items-center justify-between text-[10px] font-mono-bbg text-[#788194] shrink-0">
+      <footer className="h-6 bg-[#090a0c] border-t border-[#ff9900]/40 px-3 flex items-center justify-between text-[10px] font-mono-bbg text-[#788194] shrink-0">
         <div className="flex items-center space-x-3">
           <span className="flex items-center space-x-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>

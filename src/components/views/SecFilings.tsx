@@ -28,7 +28,7 @@ export const SecFilings: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             SEC: {activeSecurity.ticker} US EQUITY
@@ -43,13 +43,13 @@ export const SecFilings: React.FC = () => {
       </div>
 
       {/* Main Split: Filings List on Left / Filing Inspector on Right */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2 p-3 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2.5 p-3 overflow-hidden">
         {/* Filings List */}
-        <div className="flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-hidden">
-          <div className="py-2 px-3 bg-[#161820] border-b border-[#232733] text-[11px] font-semibold text-[#ff9900] uppercase">
+        <div className="flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-hidden shadow-[0_0_12px_rgba(255,153,0,0.06)]">
+          <div className="py-2 px-3 bg-[#161820] border-b border-[#ff9900]/30 text-[11px] font-semibold text-[#ff9900] uppercase">
             FILING DIRECTORY
           </div>
-          <div className="flex-1 overflow-y-auto divide-y divide-[#181a22]">
+          <div className="flex-1 overflow-y-auto divide-y divide-[#ff9900]/15">
             {filings.map((filing) => {
               const isSelected = activeFiling.id === filing.id;
               return (
@@ -79,7 +79,7 @@ export const SecFilings: React.FC = () => {
         </div>
 
         {/* Filing Inspector */}
-        <div className="lg:col-span-2 flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-y-auto p-4 space-y-4">
+        <div className="lg:col-span-2 flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-y-auto p-4 space-y-4 shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           <div>
             <div className="flex items-center space-x-2 mb-1">
               <span className="px-2 py-0.5 bg-[#ff9900] text-black font-bold text-xs rounded-xs">
@@ -95,7 +95,7 @@ export const SecFilings: React.FC = () => {
           </div>
 
           {/* Executive Summary */}
-          <div className="bg-[#14161f] border border-[#252a38] p-3 rounded-xs">
+          <div className="bg-[#14161f] border border-[#ff9900]/40 p-3 rounded-xs">
             <span className="text-[10px] text-[#ff9900] font-bold uppercase block mb-1">
               Executive Summary & MD&A Overview
             </span>
@@ -105,7 +105,7 @@ export const SecFilings: React.FC = () => {
           </div>
 
           {/* Highlights */}
-          <div className="bg-[#14161f] border border-[#252a38] p-3 rounded-xs">
+          <div className="bg-[#14161f] border border-[#ff9900]/40 p-3 rounded-xs">
             <span className="text-[10px] text-emerald-400 font-bold uppercase block mb-2 flex items-center space-x-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Key Filing Operational Highlights</span>

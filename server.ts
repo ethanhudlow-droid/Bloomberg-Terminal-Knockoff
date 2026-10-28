@@ -1,3 +1,5 @@
+process.env.DISABLE_HMR = 'true';
+
 import express from 'express';
 import http from 'http';
 import { createServer as createViteServer } from 'vite';
@@ -344,12 +346,11 @@ async function startServer() {
       console.log(`Apex Financial Terminal running on port ${PORT}`);
     });
   } else {
-    const isHmrDisabled = process.env.DISABLE_HMR === 'true';
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
-        hmr: isHmrDisabled ? false : { server },
-        watch: isHmrDisabled ? null : {},
+        hmr: false,
+        watch: null,
       },
       appType: 'spa',
     });

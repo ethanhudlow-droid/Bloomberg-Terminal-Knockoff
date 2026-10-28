@@ -32,7 +32,7 @@ export const YieldCurveView: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             YCRV: US SOVEREIGN TREASURY BENCHMARK CURVE
@@ -47,17 +47,17 @@ export const YieldCurveView: React.FC = () => {
       </div>
 
       {/* Spreads Overview Bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-[#0e1015] border-b border-[#1c1f28]">
-        <div className="bg-[#14161f] border border-[#232733] p-2.5 rounded-xs">
-          <span className="text-[10px] text-[#71798b] uppercase block">US 10Y Benchmark Yield</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-3 bg-[#0e1015] border-b border-[#ff9900]/30">
+        <div className="bg-[#14161f] border border-[#ff9900]/40 hover:border-[#ff9900] p-2.5 rounded-xs transition-colors">
+          <span className="text-[10px] text-[#ff9900]/80 uppercase block">US 10Y Benchmark Yield</span>
           <span className="text-lg font-bold text-[#ff9900]">
             {point10Y?.currentYield.toFixed(2)}%
           </span>
           <span className="text-[10px] text-emerald-400 block">+17 bps (1M change)</span>
         </div>
 
-        <div className="bg-[#14161f] border border-[#232733] p-2.5 rounded-xs">
-          <span className="text-[10px] text-[#71798b] uppercase block">2Y / 10Y Curve Spread</span>
+        <div className="bg-[#14161f] border border-[#ff9900]/40 hover:border-[#ff9900] p-2.5 rounded-xs transition-colors">
+          <span className="text-[10px] text-[#ff9900]/80 uppercase block">2Y / 10Y Curve Spread</span>
           <span className={`text-lg font-bold ${spread2s10sBps >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {spread2s10sBps >= 0 ? `+${spread2s10sBps} bps` : `${spread2s10sBps} bps`}
           </span>
@@ -66,16 +66,16 @@ export const YieldCurveView: React.FC = () => {
           </span>
         </div>
 
-        <div className="bg-[#14161f] border border-[#232733] p-2.5 rounded-xs">
-          <span className="text-[10px] text-[#71798b] uppercase block">3M / 10Y Curve Spread</span>
+        <div className="bg-[#14161f] border border-[#ff9900]/40 hover:border-[#ff9900] p-2.5 rounded-xs transition-colors">
+          <span className="text-[10px] text-[#ff9900]/80 uppercase block">3M / 10Y Curve Spread</span>
           <span className={`text-lg font-bold ${spread3m10sBps >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {spread3m10sBps >= 0 ? `+${spread3m10sBps} bps` : `${spread3m10sBps} bps`}
           </span>
           <span className="text-[10px] text-[#636c7d] block">Monetary Policy Spread</span>
         </div>
 
-        <div className="bg-[#14161f] border border-[#232733] p-2.5 rounded-xs">
-          <span className="text-[10px] text-[#71798b] uppercase block">30Y Long Bond Yield</span>
+        <div className="bg-[#14161f] border border-[#ff9900]/40 hover:border-[#ff9900] p-2.5 rounded-xs transition-colors">
+          <span className="text-[10px] text-[#ff9900]/80 uppercase block">30Y Long Bond Yield</span>
           <span className="text-lg font-bold text-white">
             {point30Y?.currentYield.toFixed(2)}%
           </span>
@@ -85,7 +85,7 @@ export const YieldCurveView: React.FC = () => {
 
       {/* Visual Yield Curve Chart */}
       <div className="p-3">
-        <div className="border border-[#232733] bg-[#101217] p-3 rounded-xs">
+        <div className="border border-[#ff9900]/60 bg-[#101217] p-3 rounded-xs shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-[#ff9900] uppercase">
               Treasury Yield Curve Structure (Current vs 1 Month vs 1 Year Ago)
@@ -164,10 +164,10 @@ export const YieldCurveView: React.FC = () => {
 
       {/* Tenor Table */}
       <div className="flex-1 overflow-auto px-3 pb-3">
-        <div className="border border-[#232733] bg-[#101217] rounded-xs">
+        <div className="border border-[#ff9900]/50 bg-[#101217] rounded-xs shadow-[0_0_10px_rgba(255,153,0,0.06)]">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-[#181a22] border-b border-[#2b303e] text-[#8e97aa] text-[10px] uppercase">
+              <tr className="bg-[#181a22] border-b border-[#ff9900]/40 text-[#ff9900]/80 text-[10px] uppercase">
                 <th className="py-2 px-3">Tenor</th>
                 <th className="py-2 px-3 text-right">Current Yield</th>
                 <th className="py-2 px-3 text-right">1 Month Ago</th>

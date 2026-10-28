@@ -137,7 +137,7 @@ export const FinancialAnalysis: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Subheader & Company Quick Selector Bar */}
-      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232630] gap-2">
+      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 gap-2 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             <span className="text-[#ff9900] font-bold text-sm">
@@ -149,15 +149,15 @@ export const FinancialAnalysis: React.FC = () => {
           </div>
 
           {/* Quick Stock Selector Pills */}
-          <div className="hidden lg:flex items-center space-x-1 pl-2 border-l border-[#262933]">
+          <div className="hidden lg:flex items-center space-x-1 pl-2 border-l border-[#ff9900]/40">
             {['NVDA', 'TSLA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'JPM'].map((sym) => (
               <button
                 key={sym}
                 onClick={() => selectSecurityByTicker(sym)}
-                className={`px-1.5 py-0.5 text-[10px] rounded-xs cursor-pointer border ${
+                className={`px-1.5 py-0.5 text-[10px] rounded-xs cursor-pointer border transition-colors ${
                   activeSecurity.ticker === sym
                     ? 'border-[#ff9900] bg-[#ff9900]/20 text-[#ff9900] font-bold'
-                    : 'border-[#262933] text-[#788194] hover:text-white hover:bg-[#1a1c24]'
+                    : 'border-[#ff9900]/30 text-[#8e96a8] hover:text-white hover:bg-[#1a1c24] hover:border-[#ff9900]'
                 }`}
               >
                 {sym}
@@ -176,7 +176,7 @@ export const FinancialAnalysis: React.FC = () => {
                 value={searchTicker}
                 onChange={(e) => setSearchTicker(e.target.value)}
                 placeholder="Lookup Ticker..."
-                className="bg-[#090a0d] border border-[#2d3240] focus:border-[#ff9900] text-white px-2 py-1 text-xs rounded-xs w-32 focus:outline-none uppercase placeholder-[#4d5464]"
+                className="bg-[#090a0d] border border-[#ff9900]/50 focus:border-[#ff9900] text-white px-2 py-1 text-xs rounded-xs w-32 focus:outline-none uppercase placeholder-[#4d5464]"
               />
               <button type="submit" className="absolute right-1.5 top-1.5 text-[#ff9900]">
                 <Search className="w-3.5 h-3.5" />
@@ -185,7 +185,7 @@ export const FinancialAnalysis: React.FC = () => {
           </form>
 
           {/* Scale: Millions vs Billions */}
-          <div className="flex items-center bg-[#171920] border border-[#2b2f3d] rounded-xs p-0.5 text-[10px]">
+          <div className="flex items-center bg-[#171920] border border-[#ff9900]/40 rounded-xs p-0.5 text-[10px]">
             <button
               onClick={() => setFinancialCurrencyScale('MILLIONS')}
               className={`px-2 py-0.5 rounded-xs cursor-pointer ${
@@ -209,7 +209,7 @@ export const FinancialAnalysis: React.FC = () => {
           </div>
 
           {/* Mode: Standard vs Growth vs Common-Size */}
-          <div className="flex items-center bg-[#171920] border border-[#2b2f3d] rounded-xs p-0.5 text-[10px]">
+          <div className="flex items-center bg-[#171920] border border-[#ff9900]/40 rounded-xs p-0.5 text-[10px]">
             <button
               onClick={() => setFinancialDisplayMode('STANDARD')}
               className={`px-2 py-0.5 rounded-xs cursor-pointer ${
@@ -245,7 +245,7 @@ export const FinancialAnalysis: React.FC = () => {
           {/* CSV Export */}
           <button
             onClick={handleExportCSV}
-            className="flex items-center space-x-1 px-2.5 py-1 bg-[#1d2028] hover:bg-[#252934] border border-[#323746] text-[#b0b8c8] hover:text-white rounded-xs cursor-pointer text-xs"
+            className="flex items-center space-x-1 px-2.5 py-1 bg-[#1d2028] hover:bg-[#252934] border border-[#ff9900]/40 hover:border-[#ff9900] text-[#b0b8c8] hover:text-white rounded-xs cursor-pointer text-xs transition-colors"
             title="Export 5-Year Statements to CSV"
           >
             <Download className="w-3 h-3 text-[#ff9900]" />
@@ -255,7 +255,7 @@ export const FinancialAnalysis: React.FC = () => {
       </div>
 
       {/* Navigation Statement Tabs */}
-      <div className="flex items-center px-3 bg-[#0d0e12] border-b border-[#21242d] space-x-2 pt-1 text-xs">
+      <div className="flex items-center px-3 bg-[#0d0e12] border-b border-[#ff9900]/40 space-x-2 pt-1 text-xs">
         <button
           onClick={() => setActiveTab('INCOME')}
           className={`px-3 py-1.5 border-b-2 font-bold cursor-pointer transition-all ${
@@ -300,10 +300,10 @@ export const FinancialAnalysis: React.FC = () => {
 
       {/* Financial Statements Table Body */}
       <div className="flex-1 overflow-auto p-3">
-        <div className="border border-[#232733] bg-[#101217] rounded-xs shadow-md">
+        <div className="border border-[#ff9900]/60 bg-[#101217] rounded-xs shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#181a22] border-b border-[#2b303e] text-[#8e97aa] text-[11px] uppercase tracking-wider">
+              <tr className="bg-[#181a22] border-b border-[#ff9900]/30 text-[#ff9900]/80 text-[11px] uppercase tracking-wider">
                 <th className="py-2 px-3 font-semibold w-1/3">Accounting Line Item (USD)</th>
                 <th className="py-2 px-2 font-semibold text-center w-24">5Y Trend</th>
                 {financials.map((f) => (
@@ -411,7 +411,7 @@ export const FinancialAnalysis: React.FC = () => {
                   </tr>
 
                   {/* Net Income */}
-                  <tr className="hover:bg-[#161922] bg-[#161a24] font-bold text-white border-t border-[#2d3240]">
+                  <tr className="hover:bg-[#161922] bg-[#161a24] font-bold text-white border-t border-[#ff9900]/40">
                     <td className="py-2 px-3 pl-4 text-emerald-400">Net Income (GAAP)</td>
                     <td className="py-2 px-2 text-center">{renderTrendSpark('netIncome')}</td>
                     {financials.map((f, i) => {
@@ -501,7 +501,7 @@ export const FinancialAnalysis: React.FC = () => {
                       return <td key={f.year} className="py-1.5 px-3 text-right text-[#b8bfcc]">{res.text}</td>;
                     })}
                   </tr>
-                  <tr className="hover:bg-[#161922] bg-[#161a24] font-bold border-t border-[#2b303d]">
+                  <tr className="hover:bg-[#161922] bg-[#161a24] font-bold border-t border-[#ff9900]/40">
                     <td className="py-2 px-3 pl-4 text-[#ff9900]">Free Cash Flow (FCF = CFO - CapEx)</td>
                     <td className="py-2 px-2 text-center">{renderTrendSpark('freeCashFlow')}</td>
                     {financials.map((f, i) => {
@@ -568,38 +568,38 @@ export const FinancialAnalysis: React.FC = () => {
 
         {/* Financial Highlights & Audit Summary Card */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-3 text-xs">
-          <div className="bg-[#121419] border border-[#232733] p-2.5 rounded-xs">
-            <span className="text-[10px] text-[#767e90] uppercase block">Latest FCF Yield</span>
+          <div className="bg-[#121419] border border-[#ff9900]/50 p-2.5 rounded-xs shadow-[0_0_8px_rgba(255,153,0,0.06)]">
+            <span className="text-[10px] text-[#ff9900]/80 uppercase block font-semibold">Latest FCF Yield</span>
             <span className="text-base font-bold text-[#ff9900] font-mono-bbg">
               {activeSecurity.freeCashFlowYield ? `${activeSecurity.freeCashFlowYield}%` : '2.8%'}
             </span>
-            <span className="text-[10px] text-[#5c6373] block mt-0.5">High cash conversion profile</span>
+            <span className="text-[10px] text-[#8e95a5] block mt-0.5">High cash conversion profile</span>
           </div>
 
-          <div className="bg-[#121419] border border-[#232733] p-2.5 rounded-xs">
-            <span className="text-[10px] text-[#767e90] uppercase block">5Y Revenue CAGR</span>
+          <div className="bg-[#121419] border border-[#ff9900]/50 p-2.5 rounded-xs shadow-[0_0_8px_rgba(255,153,0,0.06)]">
+            <span className="text-[10px] text-[#ff9900]/80 uppercase block font-semibold">5Y Revenue CAGR</span>
             <span className="text-base font-bold text-emerald-400 font-mono-bbg">
               {financials.length >= 5
                 ? `+${(((financials[0].revenue / financials[4].revenue) ** (1 / 4) - 1) * 100).toFixed(1)}%`
                 : '+24.5%'}
             </span>
-            <span className="text-[10px] text-[#5c6373] block mt-0.5">Compounded top-line growth</span>
+            <span className="text-[10px] text-[#8e95a5] block mt-0.5">Compounded top-line growth</span>
           </div>
 
-          <div className="bg-[#121419] border border-[#232733] p-2.5 rounded-xs">
-            <span className="text-[10px] text-[#767e90] uppercase block">P/E Multiple (TTM)</span>
+          <div className="bg-[#121419] border border-[#ff9900]/50 p-2.5 rounded-xs shadow-[0_0_8px_rgba(255,153,0,0.06)]">
+            <span className="text-[10px] text-[#ff9900]/80 uppercase block font-semibold">P/E Multiple (TTM)</span>
             <span className="text-base font-bold text-white font-mono-bbg">
               {activeSecurity.peTrailing ? `${activeSecurity.peTrailing}x` : '32.4x'}
             </span>
-            <span className="text-[10px] text-[#5c6373] block mt-0.5">Fwd P/E: {activeSecurity.peForward || '24.1'}x</span>
+            <span className="text-[10px] text-[#8e95a5] block mt-0.5">Fwd P/E: {activeSecurity.peForward || '24.1'}x</span>
           </div>
 
-          <div className="bg-[#121419] border border-[#232733] p-2.5 rounded-xs">
-            <span className="text-[10px] text-[#767e90] uppercase block">Capital Structure / Debt</span>
+          <div className="bg-[#121419] border border-[#ff9900]/50 p-2.5 rounded-xs shadow-[0_0_8px_rgba(255,153,0,0.06)]">
+            <span className="text-[10px] text-[#ff9900]/80 uppercase block font-semibold">Capital Structure / Debt</span>
             <span className="text-base font-bold text-sky-400 font-mono-bbg">
               ${(financials[0].totalDebt / 1000).toFixed(1)}B
             </span>
-            <span className="text-[10px] text-[#5c6373] block mt-0.5">Cash: ${(financials[0].cashAndEquivalents / 1000).toFixed(1)}B</span>
+            <span className="text-[10px] text-[#8e95a5] block mt-0.5">Cash: ${(financials[0].cashAndEquivalents / 1000).toFixed(1)}B</span>
           </div>
         </div>
       </div>

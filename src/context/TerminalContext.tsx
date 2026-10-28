@@ -162,11 +162,18 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const d = new Date();
         setLastSyncTime(`${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')} EDT`);
 
+        const quoteFlashes: Record<string, 'UP' | 'DOWN'> = {};
         setSecurities(prevSecurities => {
           const quoteMap = new Map(quotes.map(q => [q.symbol, q]));
           return prevSecurities.map(sec => {
             const live = quoteMap.get(sec.ticker);
             if (!live) return sec;
+
+            if (live.price > sec.price) {
+              quoteFlashes[sec.ticker] = 'UP';
+            } else if (live.price < sec.price) {
+              quoteFlashes[sec.ticker] = 'DOWN';
+            }
 
             return {
               ...sec,
@@ -181,6 +188,13 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             };
           });
         });
+
+        if (Object.keys(quoteFlashes).length > 0) {
+          setTickFlashes(quoteFlashes);
+          setTimeout(() => {
+            setTickFlashes({});
+          }, 250);
+        }
       }
     } catch (e) {
       console.warn('Real quote sync issue:', e);
@@ -376,7 +390,7 @@ export const TerminalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setTickFlashes(newFlashes);
     setTimeout(() => {
       setTickFlashes({});
-    }, 600);
+    }, 250);
 
     if (updatedActiveSec && newPriceForActive != null && addVolForActive != null && directionForActive != null) {
       setActiveSecurityState(updatedActiveSec);

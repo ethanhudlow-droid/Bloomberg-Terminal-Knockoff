@@ -86,7 +86,7 @@ export const LiveTickerMonitor: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Top Controls & Watchlist Configurator */}
-      <div className="p-3 bg-[#121419] border-b border-[#232733] flex flex-wrap items-center justify-between gap-3">
+      <div className="p-3 bg-[#121419] border-b border-[#ff9900]/50 flex flex-wrap items-center justify-between gap-3 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         {/* Left: Section Header & Watchlist Count */}
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
@@ -95,7 +95,7 @@ export const LiveTickerMonitor: React.FC = () => {
               LIVE TICKER MONITOR & PORTFOLIO WATCH
             </span>
           </div>
-          <span className="text-[10px] text-[#7b8396] px-2 py-0.5 bg-[#181a22] border border-[#2b303c] rounded">
+          <span className="text-[10px] text-[#ff9900] px-2 py-0.5 bg-[#181a22] border border-[#ff9900]/40 rounded">
             {userSecurities.length} SYMBOLS ACTIVE
           </span>
           {statusMessage && (
@@ -115,12 +115,12 @@ export const LiveTickerMonitor: React.FC = () => {
                 value={newSymbolInput}
                 onChange={(e) => setNewSymbolInput(e.target.value)}
                 placeholder="Add Symbol (e.g. PLTR, AMD)"
-                className="bg-[#090a0d] border border-[#2e3444] focus:border-[#ff9900] text-white px-2 py-1 text-xs rounded-xs w-44 focus:outline-none uppercase placeholder-[#4e5566]"
+                className="bg-[#090a0d] border border-[#ff9900]/60 focus:border-[#ff9900] text-white px-2 py-1 text-xs rounded-xs w-44 focus:outline-none uppercase placeholder-[#4e5566]"
               />
             </div>
             <button
               type="submit"
-              className="flex items-center space-x-1 px-2.5 py-1 bg-[#ff9900] hover:bg-[#ffb033] text-black font-bold text-xs rounded-xs cursor-pointer"
+              className="flex items-center space-x-1 px-2.5 py-1 bg-[#ff9900] hover:bg-[#ffb033] text-black font-bold text-xs rounded-xs cursor-pointer tracking-wider"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>ADD</span>
@@ -130,7 +130,7 @@ export const LiveTickerMonitor: React.FC = () => {
           {/* Sync live quotes */}
           <button
             onClick={handleManualRefresh}
-            className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#1a1d26] hover:bg-[#232733] border border-[#303646] text-[#b2bacb] hover:text-white rounded-xs cursor-pointer text-xs"
+            className="flex items-center space-x-1.5 px-2.5 py-1 bg-[#1a1d26] hover:bg-[#232733] border border-[#ff9900]/40 hover:border-[#ff9900] text-[#b2bacb] hover:text-white rounded-xs cursor-pointer text-xs transition-colors"
             title="Fetch real live quotes from exchange"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#ff9900]' : ''}`} />
@@ -140,25 +140,25 @@ export const LiveTickerMonitor: React.FC = () => {
       </div>
 
       {/* Filter & Presets Row */}
-      <div className="px-3 py-1.5 bg-[#0e1015] border-b border-[#1c1f28] flex flex-wrap items-center justify-between gap-2 text-[11px]">
+      <div className="px-3 py-1.5 bg-[#0e1015] border-b border-[#ff9900]/30 flex flex-wrap items-center justify-between gap-2 text-[11px]">
         {/* Presets */}
         <div className="flex items-center space-x-1.5">
-          <span className="text-[#646c7d] text-[10px] uppercase font-semibold">Presets:</span>
+          <span className="text-[#ff9900] text-[10px] uppercase font-semibold">Presets:</span>
           <button
             onClick={() => applyPreset(['NVDA', 'AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA'])}
-            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#282d3b] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer"
+            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#ff9900]/40 hover:border-[#ff9900] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer transition-colors"
           >
             Mag 7
           </button>
           <button
             onClick={() => applyPreset(['BTCUSD', 'ETHUSD', 'SOLUSD', 'XAU', 'CL1', 'SPX', 'US10Y'])}
-            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#282d3b] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer"
+            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#ff9900]/40 hover:border-[#ff9900] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer transition-colors"
           >
             Macro / Crypto / FX
           </button>
           <button
             onClick={() => applyPreset(['JPM', 'LLY', 'ASML', 'BRK/B'])}
-            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#282d3b] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer"
+            className="px-2 py-0.5 bg-[#161820] hover:bg-[#21242e] border border-[#ff9900]/40 hover:border-[#ff9900] text-[#9ba3b5] hover:text-white rounded-xs cursor-pointer transition-colors"
           >
             Leaders
           </button>
@@ -172,7 +172,7 @@ export const LiveTickerMonitor: React.FC = () => {
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               placeholder="Filter symbols..."
-              className="bg-[#08090c] border border-[#262a36] text-white px-2 py-0.5 text-[11px] rounded-xs w-32 focus:outline-none focus:border-[#ff9900] placeholder-[#4f5666]"
+              className="bg-[#08090c] border border-[#ff9900]/40 text-white px-2 py-0.5 text-[11px] rounded-xs w-32 focus:outline-none focus:border-[#ff9900] placeholder-[#555d6e]"
             />
           </div>
           <span className="text-[10px] text-[#555d6e]">
@@ -183,10 +183,10 @@ export const LiveTickerMonitor: React.FC = () => {
 
       {/* Main Real-Time Ticker Table */}
       <div className="flex-1 overflow-auto p-3">
-        <div className="border border-[#232733] bg-[#101217] rounded-xs shadow-md">
+        <div className="border border-[#ff9900]/60 bg-[#101217] rounded-xs shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#181a22] border-b border-[#2b303e] text-[#8e97aa] text-[11px] uppercase tracking-wider">
+              <tr className="bg-[#181a22] border-b border-[#ff9900]/30 text-[#ff9900]/80 text-[11px] uppercase tracking-wider">
                 <th className="py-2.5 px-3 font-semibold">Symbol</th>
                 <th className="py-2.5 px-3 font-semibold">Security Description</th>
                 <th className="py-2.5 px-3 font-semibold text-right">Live Price</th>
@@ -198,7 +198,7 @@ export const LiveTickerMonitor: React.FC = () => {
                 <th className="py-2.5 px-3 font-semibold text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1c1f28] text-xs">
+            <tbody className="divide-y divide-[#ff9900]/15 text-xs">
               {filteredSecurities.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="py-8 text-center text-[#6e778a]">
@@ -219,7 +219,7 @@ export const LiveTickerMonitor: React.FC = () => {
                       onClick={() => selectSecurityByTicker(sec.ticker)}
                       className={`hover:bg-[#161922] transition-colors cursor-pointer ${
                         isSelected ? 'bg-[#181c25]' : ''
-                      } ${flash === 'UP' ? 'flash-up' : flash === 'DOWN' ? 'flash-down' : ''}`}
+                      }`}
                     >
                       {/* Ticker & Class */}
                       <td className="py-2.5 px-3 font-bold">
@@ -227,7 +227,7 @@ export const LiveTickerMonitor: React.FC = () => {
                           <span className={isSelected ? 'text-[#ff9900]' : 'text-white'}>
                             {sec.ticker}
                           </span>
-                          <span className="text-[9px] px-1 py-0.2 bg-[#1d2028] text-[#7e8799] border border-[#2b303d] rounded-xs">
+                          <span className="text-[9px] px-1 py-0.2 bg-[#1d2028] text-[#ff9900]/80 border border-[#ff9900]/30 rounded-xs">
                             {sec.assetClass}
                           </span>
                         </div>
@@ -243,9 +243,18 @@ export const LiveTickerMonitor: React.FC = () => {
                         </span>
                       </td>
 
-                      {/* Live Price */}
+                      {/* Live Price with 0.25s blip arrow */}
                       <td className="py-2.5 px-3 text-right font-bold text-white text-sm">
-                        ${sec.price >= 1000 ? sec.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : sec.price.toFixed(2)}
+                        <div className="flex items-center justify-end space-x-1">
+                          <span>${sec.price >= 1000 ? sec.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : sec.price.toFixed(2)}</span>
+                          <span className="inline-flex items-center justify-center w-2.5 h-2.5 shrink-0">
+                            {flash === 'UP' ? (
+                              <span className="text-[#00e676] text-[10px] font-black leading-none">▲</span>
+                            ) : flash === 'DOWN' ? (
+                              <span className="text-[#ff3b30] text-[10px] font-black leading-none">▼</span>
+                            ) : null}
+                          </span>
+                        </div>
                       </td>
 
                       {/* Change $ */}
@@ -306,7 +315,7 @@ export const LiveTickerMonitor: React.FC = () => {
                               setCurrentView('GP');
                             }}
                             title="Open Technical Chart [GP]"
-                            className="px-1.5 py-0.5 bg-[#171922] hover:bg-[#ff9900] hover:text-black border border-[#2b303d] text-[#8e97aa] text-[10px] rounded-xs cursor-pointer"
+                            className="px-1.5 py-0.5 bg-[#171922] hover:bg-[#ff9900] hover:text-black border border-[#ff9900]/40 text-[#8e97aa] text-[10px] rounded-xs cursor-pointer"
                           >
                             GP
                           </button>
@@ -316,7 +325,7 @@ export const LiveTickerMonitor: React.FC = () => {
                               setCurrentView('FA');
                             }}
                             title="Open 5-Year Financial Statements [FA]"
-                            className="px-1.5 py-0.5 bg-[#171922] hover:bg-[#ff9900] hover:text-black border border-[#2b303d] text-[#8e97aa] text-[10px] rounded-xs cursor-pointer"
+                            className="px-1.5 py-0.5 bg-[#171922] hover:bg-[#ff9900] hover:text-black border border-[#ff9900]/40 text-[#8e97aa] text-[10px] rounded-xs cursor-pointer"
                           >
                             FA
                           </button>
@@ -338,7 +347,7 @@ export const LiveTickerMonitor: React.FC = () => {
         </div>
 
         {/* Real-time Ticker Engine Info Banner */}
-        <div className="mt-3 p-2.5 bg-[#121419] border border-[#232733] flex flex-wrap items-center justify-between text-xs text-[#8a92a3] gap-2">
+        <div className="mt-3 p-2.5 bg-[#121419] border border-[#ff9900]/50 shadow-[0_0_8px_rgba(255,153,0,0.06)] flex flex-wrap items-center justify-between text-xs text-[#8a92a3] gap-2">
           <div className="flex items-center space-x-2">
             <CheckCircle className="w-4 h-4 text-emerald-400" />
             <span>

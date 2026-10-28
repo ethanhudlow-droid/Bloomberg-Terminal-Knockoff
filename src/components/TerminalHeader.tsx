@@ -96,7 +96,7 @@ export const TerminalHeader: React.FC = () => {
   };
 
   return (
-    <header className="bg-[#101217] border-b border-[#242731] select-none text-xs">
+    <header className="bg-[#101217] border-b border-[#ff9900]/50 select-none text-xs shadow-[0_1px_8px_rgba(255,153,0,0.08)]">
       {/* Unified Functional Utility Bar */}
       <div className="flex items-center justify-between px-3 py-1.5 text-[#8e95a5] gap-2.5">
         {/* Left Side: Command Line Box + Function Dropdown + Active Symbol */}
@@ -110,7 +110,7 @@ export const TerminalHeader: React.FC = () => {
                 value={commandInput}
                 onChange={(e) => setCommandInput(e.target.value)}
                 placeholder="NVDA FA <GO> or AAPL GP..."
-                className="bg-[#08090b] text-[#f0f2f7] border border-[#303542] hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-13 py-1 text-xs font-mono-bbg rounded-sm w-44 sm:w-56 md:w-64 placeholder-[#4f5666] transition-colors shadow-inner"
+                className="bg-[#08090b] text-[#f0f2f7] border border-[#ff9900]/60 hover:border-[#ff9900] focus:border-[#ff9900] focus:outline-none pl-6 pr-13 py-1 text-xs font-mono-bbg rounded-sm w-44 sm:w-56 md:w-64 placeholder-[#4f5666] transition-colors shadow-inner"
               />
               <button
                 type="submit"
@@ -121,7 +121,7 @@ export const TerminalHeader: React.FC = () => {
             </div>
           </form>
 
-          <div className="h-4 w-[1px] bg-[#292e3a] shrink-0"></div>
+          <div className="h-4 w-[1px] bg-[#ff9900]/40 shrink-0"></div>
 
           {/* Function Dropdown Menu */}
           <div className="relative" ref={dropdownRef}>
@@ -130,7 +130,7 @@ export const TerminalHeader: React.FC = () => {
               onClick={() => setIsMenuOpen((prev) => !prev)}
               aria-expanded={isMenuOpen}
               aria-haspopup="listbox"
-              className="flex items-center space-x-2 px-2.5 py-1 bg-[#14161d] hover:bg-[#1a1d26] border border-[#ff9900]/70 hover:border-[#ff9900] rounded-sm text-[#e0e2ec] cursor-pointer transition-all shadow-[0_0_8px_rgba(255,153,0,0.15)] group font-mono-bbg"
+              className="flex items-center space-x-2 px-2.5 py-1 bg-[#14161d] hover:bg-[#1a1d26] border border-[#ff9900] rounded-sm text-[#e0e2ec] cursor-pointer transition-all shadow-[0_0_8px_rgba(255,153,0,0.18)] group font-mono-bbg"
             >
               <span className="bg-[#ff9900] text-black font-bold text-[10px] px-1.5 py-0.2 rounded-xs tracking-wide">
                 {activeItem.hotkey}
@@ -211,7 +211,7 @@ export const TerminalHeader: React.FC = () => {
             )}
           </div>
 
-          <div className="h-4 w-[1px] bg-[#292e3a] shrink-0 hidden sm:block"></div>
+          <div className="h-4 w-[1px] bg-[#ff9900]/40 shrink-0 hidden sm:block"></div>
 
           {/* Active Security Identity */}
           <div className="flex items-center space-x-2 font-mono-bbg">
@@ -235,8 +235,8 @@ export const TerminalHeader: React.FC = () => {
             title={`Real-Time Market Sync: ${lastSyncTime}. Click to sync now.`}
             className={`flex items-center space-x-1.5 px-2 py-1 rounded border text-[10px] font-mono-bbg transition-all cursor-pointer ${
               isLiveFeedConnected
-                ? 'border-emerald-800/60 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/40'
-                : 'border-amber-800/60 bg-amber-950/30 text-amber-400'
+                ? 'border-emerald-600/70 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/40'
+                : 'border-[#ff9900]/70 bg-amber-950/30 text-amber-400'
             }`}
           >
             <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-[#ff9900]' : ''}`} />
@@ -246,7 +246,7 @@ export const TerminalHeader: React.FC = () => {
           </button>
 
           {/* Tick Engine Toggle & Speed Selector */}
-          <div className="flex items-center space-x-1 bg-[#16181f] border border-[#272b36] rounded px-1.5 py-0.5">
+          <div className="flex items-center space-x-1 bg-[#16181f] border border-[#ff9900]/50 rounded px-1.5 py-0.5">
             <button
               onClick={toggleRealTime}
               title={isRealTimeRunning ? 'Pause micro-ticks' : 'Resume micro-ticks'}

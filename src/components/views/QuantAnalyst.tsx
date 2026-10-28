@@ -47,7 +47,7 @@ export const QuantAnalyst: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             B-QUANT: {activeSecurity.ticker} US EQUITY
@@ -65,9 +65,9 @@ export const QuantAnalyst: React.FC = () => {
       </div>
 
       {/* Main Split: Strategy Presets & Custom Query Left / Quant Report Right */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2 p-3 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2.5 p-3 overflow-hidden">
         {/* Left Control Panel */}
-        <div className="flex flex-col border border-[#232733] bg-[#101217] rounded-xs p-3 space-y-3 overflow-y-auto">
+        <div className="flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs p-3 space-y-3 overflow-y-auto shadow-[0_0_12px_rgba(255,153,0,0.06)]">
           <div>
             <span className="text-[10px] text-[#ff9900] font-bold uppercase block mb-1.5">
               Select Institutional Audit Profile
@@ -89,7 +89,7 @@ export const QuantAnalyst: React.FC = () => {
                   className={`w-full text-left p-2 rounded-xs border text-xs cursor-pointer transition-colors ${
                     promptType === pt
                       ? 'border-[#ff9900] bg-[#1a1d26] text-white font-semibold'
-                      : 'border-[#232733] bg-[#121419] text-[#8e97aa] hover:border-[#383e4d] hover:text-white'
+                      : 'border-[#ff9900]/30 bg-[#121419] text-[#8e97aa] hover:border-[#ff9900] hover:text-white'
                   }`}
                 >
                   {pt}
@@ -108,12 +108,12 @@ export const QuantAnalyst: React.FC = () => {
               value={customQuestion}
               onChange={(e) => setCustomQuestion(e.target.value)}
               placeholder="e.g. Stress test FY26 margins if datacenter capex decelerates 15%..."
-              className="w-full bg-[#08090b] border border-[#282d3b] focus:border-[#ff9900] text-white p-2 text-xs rounded-xs focus:outline-none placeholder-[#4d5464]"
+              className="w-full bg-[#08090b] border border-[#ff9900]/50 focus:border-[#ff9900] text-white p-2 text-xs rounded-xs focus:outline-none placeholder-[#4d5464]"
             />
             <button
               onClick={() => runQuantAnalysis()}
               disabled={isLoading}
-              className="w-full mt-2 py-1.5 bg-[#ff9900] hover:bg-[#ffb033] text-black font-bold text-xs rounded-xs cursor-pointer flex items-center justify-center space-x-1.5 disabled:opacity-50"
+              className="w-full mt-2 py-1.5 bg-[#ff9900] hover:bg-[#ffb033] text-black font-bold text-xs rounded-xs cursor-pointer flex items-center justify-center space-x-1.5 disabled:opacity-50 tracking-wider"
             >
               {isLoading ? (
                 <>
@@ -130,29 +130,29 @@ export const QuantAnalyst: React.FC = () => {
           </div>
 
           {/* Security Snapshot Card */}
-          <div className="bg-[#14161f] border border-[#20232c] p-2.5 rounded-xs space-y-1 text-[11px]">
+          <div className="bg-[#14161f] border border-[#ff9900]/40 p-2.5 rounded-xs space-y-1 text-[11px]">
             <div className="flex justify-between">
-              <span className="text-[#6d7586]">Security:</span>
+              <span className="text-[#ff9900]/80">Security:</span>
               <span className="text-white font-bold">{activeSecurity.ticker}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6d7586]">Price:</span>
+              <span className="text-[#ff9900]/80">Price:</span>
               <span className="text-[#ff9900] font-bold">${activeSecurity.price.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6d7586]">Mkt Cap:</span>
+              <span className="text-[#ff9900]/80">Mkt Cap:</span>
               <span className="text-white">{activeSecurity.marketCap}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#6d7586]">Trailing P/E:</span>
+              <span className="text-[#ff9900]/80">Trailing P/E:</span>
               <span className="text-white">{activeSecurity.peTrailing || 'N/A'}x</span>
             </div>
           </div>
         </div>
 
         {/* Right Output Panel */}
-        <div className="lg:col-span-2 flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-hidden">
-          <div className="py-2 px-3 bg-[#161820] border-b border-[#232733] text-[11px] font-semibold text-[#ff9900] uppercase flex items-center justify-between">
+        <div className="lg:col-span-2 flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-hidden shadow-[0_0_12px_rgba(255,153,0,0.06)]">
+          <div className="py-2 px-3 bg-[#161820] border-b border-[#ff9900]/30 text-[11px] font-semibold text-[#ff9900] uppercase flex items-center justify-between">
             <span>INSTITUTIONAL QUANTITATIVE RESEARCH REPORT</span>
             {sourceTag && (
               <span className="text-[10px] text-emerald-400 font-normal">

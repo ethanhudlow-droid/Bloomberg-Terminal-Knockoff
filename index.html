@@ -13,20 +13,80 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script>
-      // Suppress Vite HMR WebSocket connection errors in sandbox iframe environment
-      window.addEventListener('unhandledrejection', function (e) {
-        var reason = e.reason;
-        var msg = (reason && (reason.message || reason.stack || String(reason))) || '';
-        if (msg.includes('WebSocket') || msg.includes('closed without opened') || (e.reason && e.reason.stack && e.reason.stack.includes('@vite/client'))) {
-          e.preventDefault();
+      // 1. Shim WebSocket for Vite HMR in iframe sandboxes to prevent "WebSocket closed without opened" errors
+      (function() {
+        var RealWebSocket = window.WebSocket;
+        if (typeof RealWebSocket === 'function') {
+          window.WebSocket = function(url, protocols) {
+            var urlStr = String(url || '');
+            var protoStr = String(protocols || '');
+            if (urlStr.includes('vite') || protoStr.includes('vite') || urlStr.includes('24678') || urlStr.includes('ws://') || urlStr.includes('wss://')) {
+              var listeners = {};
+              var fakeWs = {
+                readyState: 1, // OPEN
+                url: urlStr,
+                protocol: protoStr,
+                bufferedAmount: 0,
+                extensions: '',
+                binaryType: 'blob',
+                send: function() {},
+                close: function() {},
+                addEventListener: function(type, fn) {
+                  listeners[type] = listeners[type] || [];
+                  listeners[type].push(fn);
+                  if (type === 'open') {
+                    setTimeout(function() {
+                      try { fn.call(fakeWs, { type: 'open', target: fakeWs }); } catch (err) {}
+                    }, 0);
+                  }
+                },
+                removeEventListener: function(type, fn) {
+                  if (listeners[type]) {
+                    listeners[type] = listeners[type].filter(function(f) { return f !== fn; });
+                  }
+                },
+                dispatchEvent: function() { return true; },
+                onopen: null,
+                onclose: null,
+                onerror: null,
+                onmessage: null
+              };
+              setTimeout(function() {
+                if (typeof fakeWs.onopen === 'function') {
+                  try { fakeWs.onopen({ type: 'open', target: fakeWs }); } catch (err) {}
+                }
+              }, 0);
+              return fakeWs;
+            }
+            return new RealWebSocket(url, protocols);
+          };
+          window.WebSocket.prototype = RealWebSocket.prototype;
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
         }
-      });
-      window.addEventListener('error', function (e) {
-        var msg = (e.message || '') + (e.filename || '');
-        if (msg.includes('WebSocket') || msg.includes('closed without opened') || (e.filename && e.filename.includes('@vite/client'))) {
-          e.preventDefault();
+
+        // 2. Suppress any stray Vite HMR or WebSocket errors in sandbox
+        function isViteOrWsError(err, extra) {
+          var s = (extra || '') + ' ' + (err && (err.message || err.stack || String(err))) + ' ' + (err && err.filename || '');
+          return s.includes('WebSocket') || s.includes('closed without opened') || s.includes('@vite/client') || s.includes('vite-hmr');
         }
-      });
+
+        window.addEventListener('unhandledrejection', function(e) {
+          if (isViteOrWsError(e.reason, '')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+
+        window.addEventListener('error', function(e) {
+          if (isViteOrWsError(e.error, e.message)) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+      })();
     </script>
   </head>
   <body class="bg-[#0c0d0e] text-[#e0e2ec] font-sans antialiased overflow-hidden select-none">

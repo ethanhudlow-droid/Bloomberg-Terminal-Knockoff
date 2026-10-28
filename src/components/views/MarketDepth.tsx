@@ -12,7 +12,7 @@ export const MarketDepth: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0c0d10] font-mono-bbg overflow-hidden text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#232733]">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#121419] border-b border-[#ff9900]/50 shadow-[0_1px_8px_rgba(255,153,0,0.06)]">
         <div className="flex items-center space-x-3">
           <span className="text-[#ff9900] font-bold text-sm">
             MD: {activeSecurity.ticker} US EQUITY
@@ -32,10 +32,10 @@ export const MarketDepth: React.FC = () => {
       </div>
 
       {/* Main Content: Ladder on Left / Time & Sales on Right */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2 p-2 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-2.5 p-2.5 overflow-hidden">
         {/* Level 2 Order Book Ladder (Bids & Asks) */}
-        <div className="lg:col-span-2 flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-hidden">
-          <div className="grid grid-cols-2 divide-x divide-[#232733] border-b border-[#232733] bg-[#161820] text-[11px] font-semibold text-[#8b94a6] uppercase py-1.5 px-2">
+        <div className="lg:col-span-2 flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-hidden shadow-[0_0_12px_rgba(255,153,0,0.06)]">
+          <div className="grid grid-cols-2 divide-x divide-[#ff9900]/30 border-b border-[#ff9900]/30 bg-[#161820] text-[11px] font-semibold text-[#8b94a6] uppercase py-1.5 px-2">
             <div className="flex justify-between pr-2 text-emerald-400">
               <span>BIDS (BUY ORDERS)</span>
               <span>SIZE / TOTAL</span>
@@ -46,9 +46,9 @@ export const MarketDepth: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex-1 grid grid-cols-2 divide-x divide-[#232733] overflow-y-auto">
+          <div className="flex-1 grid grid-cols-2 divide-x divide-[#ff9900]/30 overflow-y-auto">
             {/* Bids Ladder */}
-            <div className="divide-y divide-[#181a22]">
+            <div className="divide-y divide-[#ff9900]/10">
               {orderBook.bids.map((bid, i) => {
                 const depthPct = (bid.total / maxCumulative) * 100;
                 return (
@@ -71,7 +71,7 @@ export const MarketDepth: React.FC = () => {
             </div>
 
             {/* Asks Ladder */}
-            <div className="divide-y divide-[#181a22]">
+            <div className="divide-y divide-[#ff9900]/10">
               {orderBook.asks.map((ask, i) => {
                 const depthPct = (ask.total / maxCumulative) * 100;
                 return (
@@ -96,8 +96,8 @@ export const MarketDepth: React.FC = () => {
         </div>
 
         {/* Real-Time Time & Sales Tape */}
-        <div className="flex flex-col border border-[#232733] bg-[#101217] rounded-xs overflow-hidden">
-          <div className="py-1.5 px-3 bg-[#161820] border-b border-[#232733] text-[11px] font-semibold text-[#ff9900] uppercase flex justify-between items-center">
+        <div className="flex flex-col border border-[#ff9900]/60 bg-[#101217] rounded-xs overflow-hidden shadow-[0_0_12px_rgba(255,153,0,0.06)]">
+          <div className="py-1.5 px-3 bg-[#161820] border-b border-[#ff9900]/30 text-[11px] font-semibold text-[#ff9900] uppercase flex justify-between items-center">
             <span>TIME & SALES TAPE</span>
             <span className="text-[10px] text-emerald-400 flex items-center space-x-1">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
@@ -105,7 +105,7 @@ export const MarketDepth: React.FC = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-4 px-3 py-1 bg-[#13151c] border-b border-[#1f222c] text-[10px] font-semibold text-[#767e90] uppercase">
+          <div className="grid grid-cols-4 px-3 py-1 bg-[#13151c] border-b border-[#ff9900]/20 text-[10px] font-semibold text-[#ff9900]/70 uppercase">
             <span>TIME</span>
             <span>PRICE</span>
             <span className="text-right">SIZE</span>
